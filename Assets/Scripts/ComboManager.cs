@@ -12,10 +12,16 @@ public class ComboManager : MonoBehaviour
     public float animationDuration = 1.5f; // Toplam süre 1.5s
     public float floatDistance = 150f;
 
-    void Awake() => instance = this;
+    void Awake()
+    {
+        if (instance == null) instance = this;
+        else Destroy(gameObject);
+    }
 
     public void ShowCombo(int multiClearCount, int streakCount)
     {
+        if (comboTextPrefab == null || canvasTransform == null) return;
+        
         string message = "";
         Color textColor = Color.yellow;
 

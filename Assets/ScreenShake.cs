@@ -5,7 +5,11 @@ public class ScreenShake : MonoBehaviour
 {
     public static ScreenShake instance;
 
-    void Awake() { instance = this; }
+    void Awake()
+    {
+        if (instance == null) instance = this;
+        else Destroy(gameObject);
+    }
 
     public void Shake(float duration, float magnitude)
     {

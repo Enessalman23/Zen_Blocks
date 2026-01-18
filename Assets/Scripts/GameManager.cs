@@ -9,10 +9,16 @@ public class GameManager : MonoBehaviour
     [Header("Oyun Durumu")]
     public bool isGameStarted = false;
     public int streakCount = 0;
+    
+    [Header("Combo Sistemi")]
+    [Tooltip("Kaç hamle boyunca blok patlamazsa combo sıfırlanır")]
+    public int comboTolerance = 2;
+    private int missedMoves = 0; // Kaç hamledir blok patlamadı
 
     void Awake()
     {
         if (instance == null) instance = this;
+        else Destroy(gameObject);
 
         // Mobil optimizasyon ayarları
         Application.targetFrameRate = 60;
@@ -39,6 +45,7 @@ public class GameManager : MonoBehaviour
         if (totalLines > 0)
         {
             streakCount++; // Seri arttı
+            missedMoves = 0; // Başarılı hamle, sayacı sıfırla
             
             // Puan hesaplama (totalLines * streakCount)
             if (ScoreManager.instance != null)
@@ -50,7 +57,15 @@ public class GameManager : MonoBehaviour
         }
         else
         {
-            streakCount = 0; // Hiç satır silinmediyse seri bozulur
+            // Blok patlamadı, kaçırılan hamle sayısını artır
+            missedMoves++;
+            
+            // Tolerans aşıldıysa combo sıfırlanır
+            if (missedMoves >= comboTolerance)
+            {
+                streakCount = 0;
+                missedMoves = 0;
+            }
         }
     }
 }

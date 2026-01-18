@@ -25,7 +25,6 @@ public class MenuManager : MonoBehaviour
         int savedLevel = PlayerPrefs.GetInt("SavedLevel", 1);
         GameData.currentLevel = savedLevel;
 
-        Debug.Log("Level Modu Başlatılıyor: Seviye " + GameData.currentLevel);
         SceneManager.LoadScene("EndlessGameScene");
     }
 
@@ -33,7 +32,6 @@ public class MenuManager : MonoBehaviour
     public void StartEndlessMode()
     {
         GameData.currentMode = GameData.Mode.Endless;
-        Debug.Log("Endless Modu Başlatılıyor");
         SceneManager.LoadScene("EndlessGameScene");
     }
 
@@ -42,7 +40,6 @@ public class MenuManager : MonoBehaviour
     {
         PlayerPrefs.DeleteKey("SavedLevel");
         UpdateMenuUI();
-        Debug.Log("Tüm ilerleme sıfırlandı!");
     }
 
     void UpdateMenuUI()

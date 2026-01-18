@@ -8,13 +8,15 @@ public class DraggableShape : MonoBehaviour
     private Vector3 originalPosition;
     private List<Transform> childSquares = new List<Transform>();
     private List<SpriteRenderer> childRenderers = new List<SpriteRenderer>();
-    private Vector3 mouseOffset;
+    private Vector3 dragOffset; 
+
+    [Header("Sürükleme Ayarları")]
+    public float yOffset = 1.5f; 
 
     void Start()
     {
         originalPosition = transform.position;
         RefreshChildSquares();
-
         transform.localScale = Vector3.zero;
         transform.DOScale(0.6f, 0.4f).SetEase(Ease.OutBack).SetUpdate(true);
     }
@@ -38,16 +40,14 @@ public class DraggableShape : MonoBehaviour
     {
         if (!isDragging) return;
 
-        // GameManager kontrolü
         if (GameManager.instance != null && !GameManager.instance.isGameStarted)
         {
             CancelDragging();
             return;
         }
 
-        transform.position = GetMouseWorldPos() + mouseOffset;
+        transform.position = GetMouseWorldPos() + dragOffset + new Vector3(0, yOffset, 0);
 
-        // Önizleme Sistemi
         if (GridManager.instance != null)
         {
             GridManager.instance.ShowPreview(this.gameObject, transform.position);
@@ -67,11 +67,12 @@ public class DraggableShape : MonoBehaviour
         
         isDragging = true;
         SetSortingOrder(100); 
-        
         transform.DOKill(); 
-        mouseOffset = transform.position - GetMouseWorldPos();
+
+        dragOffset = transform.position - GetMouseWorldPos();
         transform.DOScale(1.0f, 0.15f).SetEase(Ease.OutQuad);
-        
+
+        // --- SES TETİKLEME: TUTMA ---
         if(AudioManager.instance != null) AudioManager.instance.PlaySound(AudioManager.instance.grabSound);
     }
 
@@ -93,7 +94,6 @@ public class DraggableShape : MonoBehaviour
     void PlaceShape()
     {
         if (GridManager.instance == null) return;
-
         foreach (Transform square in childSquares)
         {
             if (square == null) continue;
@@ -103,48 +103,36 @@ public class DraggableShape : MonoBehaviour
 
         SnapToGrid();
         SetSortingOrder(2);
-
-        if(AudioManager.instance != null) AudioManager.instance.PlaySound(AudioManager.instance.placeSound);
-        
         transform.DOPunchScale(new Vector3(0.1f, 0.1f, 0.1f), 0.2f);
 
-        // Spawner bulma (En garanti yöntem)
+        // --- SES TETİKLEME: YERLEŞTİRME ---
+        if(AudioManager.instance != null) AudioManager.instance.PlaySound(AudioManager.instance.placeSound);
+
         ShapeSpawner spawner = FindFirstObjectByType<ShapeSpawner>();
         if (spawner != null) spawner.ShapePlaced(this.gameObject);
 
         this.enabled = false;
         if (GetComponent<Collider2D>()) GetComponent<Collider2D>().enabled = false;
-        
-        foreach (Transform s in childSquares) 
-        {
-            if(s != null) s.gameObject.tag = "Block";
-        }
+        foreach (Transform s in childSquares) if(s != null) s.gameObject.tag = "Block";
 
         GridManager.instance.CheckForMatches();
     }
 
     void SetSortingOrder(int order)
     {
-        foreach (var sr in childRenderers)
-        {
-            if (sr != null) sr.sortingOrder = order;
-        }
+        foreach (var sr in childRenderers) if (sr != null) sr.sortingOrder = order;
     }
 
     void SnapToGrid()
     {
         if (GridManager.instance == null) return;
-
         Transform validSquare = childSquares.Find(s => s != null);
         if (validSquare == null) return;
 
         Vector2Int p = GridManager.instance.WorldToGridPos(validSquare.position);
-        
         float startX = -(GridManager.instance.width - 1) * GridManager.instance.spacing / 2f;
         float startY = -(GridManager.instance.height - 1) * GridManager.instance.spacing / 2f;
-        
         Vector3 targetWorldPos = new Vector3(startX + (p.x * GridManager.instance.spacing), startY + (p.y * GridManager.instance.spacing), 0);
-        
         Vector3 shift = targetWorldPos - validSquare.position;
         transform.position += shift;
     }
@@ -161,26 +149,15 @@ public class DraggableShape : MonoBehaviour
     bool CanPlaceShape()
     {
         if (GridManager.instance == null) return false;
-
         foreach (Transform s in childSquares)
         {
             if (s == null) continue;
             Vector2Int p = GridManager.instance.WorldToGridPos(s.position);
-            
-            // Izgara sınırları ve doluluk kontrolü
             if (p.x < 0 || p.x >= GridManager.instance.width || p.y < 0 || p.y >= GridManager.instance.height || GridManager.instance.IsCellOccupied(p.x, p.y))
-            {
                 return false;
-            }
         }
         return true;
     }
 
-    private void OnDestroy()
-    {foreach (Transform child in transform) {
-            // Kareleri ana objeden ayır (veya zaten Grid'e yeni kareler mi spawn ediyorsun kontrol et)
-        }
-        Destroy(gameObject);
-        transform.DOKill();
-    }
+    private void OnDestroy() => transform.DOKill();
 }

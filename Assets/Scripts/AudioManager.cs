@@ -35,7 +35,8 @@ public class AudioManager : MonoBehaviour
     {
         if (comboSound != null && efxSource != null)
         {
-            efxSource.pitch = 1.0f + (comboLevel * 0.1f); 
+            // Pitch değerini makul bir aralıkta tut (0.5 - 2.0 arası)
+            efxSource.pitch = Mathf.Clamp(1.0f + (comboLevel * 0.1f), 0.5f, 2.0f); 
             efxSource.PlayOneShot(comboSound);
         }
     }

@@ -17,6 +17,7 @@ public class ScoreManager : MonoBehaviour
     void Awake()
     {
         if (instance == null) instance = this;
+        else Destroy(gameObject);
     }
 
     void Start()
@@ -25,7 +26,8 @@ public class ScoreManager : MonoBehaviour
         highScore = PlayerPrefs.GetInt("HighScore", 0);
         
         // Başlangıç değerlerini yazdır
-        scoreText.text = "Score: 0";
+        if (scoreText != null)
+            scoreText.text = "0";
         if (highScoreText != null)
             highScoreText.text = "Best: " + highScore.ToString();
     }
@@ -51,8 +53,8 @@ public class ScoreManager : MonoBehaviour
             PlayerPrefs.SetInt("HighScore", highScore);
             PlayerPrefs.Save(); // Veriyi fiziksel olarak diske yaz (Mobil için önemli)
             
-            if (highScoreText != null)
-                highScoreText.text = "Best: " + highScore.ToString();
+            // HighScore animasyonu ile güncelle
+            AnimateHighScoreUpdate();
         }
 
         AnimateScoreUpdate();
@@ -67,14 +69,45 @@ public class ScoreManager : MonoBehaviour
 
     void AnimateScoreUpdate()
     {
+        if (scoreText == null) return;
+        
         // Sayıların tırmanma efekti (0.5 saniye sürer)
         DOTween.To(() => displayedScore, x => displayedScore = x, currentScore, 0.5f)
             .OnUpdate(() => {
-                scoreText.text = "Score: " + displayedScore.ToString();
+                if (scoreText != null)
+                    scoreText.text = displayedScore.ToString();
             })
             .SetEase(Ease.OutQuad);
 
         // Score yazısına hafif bir "Zıplama" efekti ver
         scoreText.transform.DOPunchScale(new Vector3(0.15f, 0.15f, 0f), 0.2f);
+    }
+
+    // HighScore için animasyonlu güncelleme
+    public void AnimateHighScoreUpdate()
+    {
+        if (highScoreText == null) return;
+        
+        int displayedHighScore = 0;
+        int targetHighScore = highScore;
+        
+        // Mevcut highscore değerini parse et (eğer "Best: " prefix'i varsa)
+        string currentText = highScoreText.text;
+        if (currentText.Contains("Best: "))
+        {
+            string numStr = currentText.Replace("Best: ", "");
+            if (int.TryParse(numStr, out int parsed))
+                displayedHighScore = parsed;
+        }
+        
+        // HighScore animasyonu
+        DOTween.To(() => displayedHighScore, x => displayedHighScore = x, targetHighScore, 0.6f)
+            .OnUpdate(() => {
+                highScoreText.text = "Best: " + displayedHighScore.ToString();
+            })
+            .SetEase(Ease.OutQuad);
+        
+        // HighScore yazısına da zıplama efekti
+        highScoreText.transform.DOPunchScale(new Vector3(0.2f, 0.2f, 0f), 0.3f);
     }
 }

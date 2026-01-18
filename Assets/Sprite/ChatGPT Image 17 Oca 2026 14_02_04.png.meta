@@ -1,10 +1,16 @@
 fileFormatVersion: 2
-guid: 5035502ebcf0c85408b49d4455c3c019
+guid: 6483c9a732b9633478710d6d86ec1805
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -3882951633273969859
-    second: WhatsApp Image 2026-01-13 at 12.38.31_0
+      213: 4840256440100667897
+    second: ChatGPT Image 17 Oca 2026 14_02_04_0
+  - first:
+      213: -2371063465653423902
+    second: ChatGPT Image 17 Oca 2026 14_02_04_1
+  - first:
+      213: -7282697322357857486
+    second: ChatGPT Image 17 Oca 2026 14_02_04_2
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -37,7 +43,7 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     serializedVersion: 2
-    filterMode: 1
+    filterMode: 0
     aniso: 1
     mipBias: 0
     wrapU: 1
@@ -74,7 +80,7 @@ TextureImporter:
     buildTarget: DefaultTexturePlatform
     maxTextureSize: 2048
     resizeAlgorithm: 0
-    textureFormat: -1
+    textureFormat: 4
     textureCompression: 1
     compressionQuality: 50
     crunchedCompression: 0
@@ -126,13 +132,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: WhatsApp Image 2026-01-13 at 12.38.31_0
+      name: ChatGPT Image 17 Oca 2026 14_02_04_0
       rect:
         serializedVersion: 2
-        x: 0
+        x: 11
         y: 0
-        width: 859
-        height: 1280
+        width: 1494
+        height: 1024
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -141,8 +147,52 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: d33aea2ff0cfc1ac0800000000000000
-      internalID: -3882951633273969859
+      spriteID: 9f14ff5669b0c2340800000000000000
+      internalID: 4840256440100667897
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ChatGPT Image 17 Oca 2026 14_02_04_1
+      rect:
+        serializedVersion: 2
+        x: 1086
+        y: 519
+        width: 11
+        height: 12
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2e032d5275a481fd0800000000000000
+      internalID: -2371063465653423902
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ChatGPT Image 17 Oca 2026 14_02_04_2
+      rect:
+        serializedVersion: 2
+        x: 1087
+        y: 499
+        width: 9
+        height: 6
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 233eb26ee59aeea90800000000000000
+      internalID: -7282697322357857486
       vertices: []
       indices: 
       edges: []
@@ -161,7 +211,9 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      WhatsApp Image 2026-01-13 at 12.38.31_0: -3882951633273969859
+      ChatGPT Image 17 Oca 2026 14_02_04_0: 4840256440100667897
+      ChatGPT Image 17 Oca 2026 14_02_04_1: -2371063465653423902
+      ChatGPT Image 17 Oca 2026 14_02_04_2: -7282697322357857486
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
